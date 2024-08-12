@@ -1,0 +1,73 @@
+{% extends 'base.html'%}
+
+{% block title %}
+{{product.title}}
+{% endblock %}
+{% load core_tags %}
+{% is_liked request product as is_liked %}
+
+
+{% block content %}
+<div class="card">
+  {% if product.image %}
+  <img src="{{ product.image.url }}" class="card-img-top" alt="...">
+  {% endif %}
+  <div class="card-body">
+    <h5 class="card-title">{{ product.title }}</h5>
+    <p class="card-text">{{ product.short_description }}</p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">Цена: {{ product.price }}</li>
+    <li class="list-group-item">Добавлено: {{ product.created_at }}</li>
+    <li class="list-group-item">Категория: {{ product.category }}</li>
+    <li class="list-group-item">Автор: {{product.author}}</li>
+  </ul>
+    {% if request.user.is_authenticated %}
+  <div class="card-body">
+     <a href="#" class="btn btn-primary me-2">Добавить в корзину</a>
+  </div>
+<a href="{% url 'add_like' product.id %}" class="btn btn-like fs-4">
+    {% if is_liked %}
+    <i class="bi bi-suit-heart-fill">Удалить из избранных</i>
+    {% else %}
+    <i class="bi bi-suit-heart">Добавить в избранное</i>
+</a>
+    {% endif %}
+    {% endif %}
+
+
+
+<div class="comments-block">
+    <h2 class="text-center my-4">Комментарии</h2>
+    <div class="container">
+        <div class="row row-gap-4">
+        {% for comment in comments %}
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">
+                    {{ comment.author }}
+                    </div>
+                    <div class="card-body">
+                        <blockquote class="blockquote mb-0">
+                            <p>{{ comment.text }}</p>
+                            <footer class="blockquote-footer"> <cite title="Source Title">
+                                </cite>{{ comment.created_at }}</footer>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+            {% if request.user.is_authenticated %}
+    <form action="" class="mt-4" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <button class="btn btn-dark" type="submit">Submit</button>
+    </form>
+    {% else %}
+    <p>Только авторизованные пользователи могут оставлять комментарии <a href="{% url 'login' %}">Войти</a></p>
+    {% endif %}
+    </div>
+</div>
+</div>
+{% endblock %}

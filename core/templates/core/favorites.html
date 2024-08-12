@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Избранное
+{% endblock %}
+
+{% block content %}
+{% if products %}
+<div class="row row-gap-4">
+    {% for product in products %}
+    <div class="col-12 col-md-6">
+        {% include 'components/_product-card.html' %}
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>У вас нет избранных продуктов</p>
+{% endif %}
+{% endblock %}

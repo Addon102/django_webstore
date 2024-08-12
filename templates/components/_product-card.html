@@ -1,0 +1,23 @@
+<div class="card">
+  {% if product.image %}
+  <img src="{{ product.image.url }}" class="card-img-top" alt="..." height="250">
+  {% endif %}
+  <div class="card-body">
+    <h5 class="card-title">{{ product.title }}</h5>
+    <p class="card-text">{{ product.short_description }}</p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">Цена: {{ product.price }}</li>
+    <li class="list-group-item">Добавлено: {{ product.created_at }}</li>
+    <li class="list-group-item">Категория: {{ product.category }}</li>
+    <li class="list-group-item">Автор: {{product.author}}</li>
+  </ul>
+  <div class="card-body">
+     <a href="{% url 'product_detail' product.pk %}" class="btn btn-primary">Подробнее</a>
+    {% if request.user.is_authenticated %}
+    {% if request.path == '/' %}
+     <a href="{% url 'shopping_cart' request.user.username %}" class="btn btn-primary me-2">Добавить в корзину</a>
+    {% endif %}
+    {% endif %}
+  </div>
+</div>
